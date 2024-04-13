@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>so.dang.cool :: Discord webhook mockup</title>
+    <meta charset='utf-8' />
+    <link rel='stylesheet' href='style.css'>
+
+    <meta property='og:title' content='Home'>
+    <meta property='og:image' content='https://so.dang.cool/preview.png'>
+    <meta property='og:image:type' content='image/png'>
+    <meta property='og:image:width' content='1024'>
+    <meta property='og:image:height' content='512'>
+
+    <!-- Thanks to https://favicomatic.com -->
+    <link rel='icon' type='image/png' href='https://so.dang.cool/favicon-196x196.png' sizes='196x196' />
+    <link rel='icon' type='image/png' href='https://so.dang.cool/favicon-32x32.png' sizes='32x32' />
+    <link rel='icon' type='image/png' href='https://so.dang.cool/favicon-16x16.png' sizes='16x16' />
+    <link rel='icon' type='image/png' href='https://so.dang.cool/favicon-128.png' sizes='128x128' />
+
+    <!-- 'Playfair Display' Font: https://fonts.google.com/specimen/Playfair+Display?category=Serif&sort=popularity -->
+    <link rel='preconnect' href='https://fonts.googleapis.com'>
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap'>
+  </head>
+
+  <body>
+
+    <div id='strip'>
+    <header class='center'>
+      <div>
+        <pre id='sdc'>
+░█▀▀░█▀█░░░░█▀▄░█▀█░█▀█░█▀▀░░░░█▀▀░█▀█░█▀█░█░░
+░▀▀█░█░█░░░░█░█░█▀█░█░█░█░█░░░░█░░░█░█░█░█░█░░
+░▀▀▀░▀▀▀░▀░░▀▀░░▀░▀░▀░▀░▀▀▀░▀░░▀▀▀░▀▀▀░▀▀▀░▀▀▀
+        </pre>
+      </div>
+
+      <h1>Home</h1>
+    </header>
+
+    <hr>
+
+    <main>
+
+    <p>The following is a mock-up for a discord webhook interaction.</p>
+
+    <hr>
+
+    <!-- BEGIN CONTENT -->
+
+    <div class='form-ish'>
+      <p>
+        To gain premium access, please provide the following information:
+      </p>
+
+      <label for='order-num'>Order confirmation number</label>
+      <input type='text' name='order-num' placeholder='123456789' />
+
+      <br>
+
+      <label for='email'>Email address</label>
+      <input type='text' name='email' placeholder='hello@inter.net' />
+
+      <br>
+
+      <button id='sendIt' onclick='sendToDiscord()'>submit</button>
+
+      <br>
+    </div>
+
+    <style>
+      .form-ish { margin: 2em; }
+      .form-ish >* { display: block; }
+    </style>
+
+    <script>
+      const webhook = 'https://discord.com/api/webhooks/1228608300598165525/Qqo0d8YqNwWE7rEVNnQuVraZuzp3cOOxC94FbTQV9fCVcZk5hJB-QPLd59kRZw9yHBY3';
+      const sendBtn = document.querySelector('button#sendIt');
+      const statusText = document.createTextNode('');
+      sendBtn.after(statusText);
+
+      
+      function sendToDiscord() {
+        const orderNumber = document.querySelector('input[name=order-num]').value.trim();
+        const emailAddress = document.querySelector('input[name=email]').value.trim();
+
+        if (orderNumber == '') {
+          statusText.data = 'Order Confirmation Number must not be empty';
+          return;
+        }
+
+        if (emailAddress == '') {
+          statusText.data = 'Email Address must not be empty';
+          return;
+        }
+        
+        const fd = new FormData();
+        fd.append(
+          'content',
+          `:crown: A new premium member appeared!
+          Order Confirmation Number: \`${orderNumber}\`
+          Email Address: \`${emailAddress}\``
+        );
+
+        fetch(webhook, { method: 'POST', body: fd })
+          .then(resp => {
+            if (resp.ok) {
+              statusText.data = 'Your information was received.';
+              sendBtn.remove();
+            } else {
+              statusText.data = `Error sending your information. (${resp.status} ${resp.statusText})`;
+            }
+          })
+        ;
+      }
+    </script>
+    
+    <!-- END CONTENT -->
+
+    </main>
+
+    <hr>
+
+    <footer>
+      <center>
+        <p>
+          2024, J.R. Hill
+          <a href='https://notbyai.fyi'>
+            <img alt='Produced by humans, not by AI' align='right' src='https://so.dang.cool/img/not-by-ai.svg'>
+          </a>
+        </p>
+        <p>
+          <a href='https://so.dang.cool/blog/'>Blog</a> |
+          <a href='https://so.dang.cool/blog/feed.xml'>Feed</a>
+        </p>
+        <p><em>
+          Generated with <a href='https://dt.plumbing'">dt</a>
+          (<a href='https://github.com/so-dang-cool/so.dang.cool'>source</a>)
+        </em></p>
+        <p>
+          <a href='https://github.com/booniepepper'>github</a> |
+          <a href='https://gitlab.com/booniepepper'>gitlab</a> |
+          <a href='https://linkedin.com/in/justinroberthill'>linkedin</a> |
+          <a href='https://booniepepper.itch.io'>itch.io</a> |
+          <a href='https://www.codewars.com/users/booniepepper'>codewars</a> |
+          <a href='https://www.deviantart.com/jrhill/gallery'>deviant art</a> |
+          <a href='https://www.spoonflower.com/profiles/booniepepper'>spoonflower</a>
+        </p>
+      </center>
+    </footer>
+
+    </div>
+  </body>
+</html>
